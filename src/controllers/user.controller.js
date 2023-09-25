@@ -8,14 +8,13 @@ async function register(req, res) {
         let params = req.body;
 
         // Validación de parámetros requeridos.
-        if (!params.tuitionNumber || !params.name || !params.surname || !params.email || !params.password) {
+        if (!params.name || !params.surname || !params.email || !params.password) {
             return res.status(400).send({ error: "Faltan datos por enviar" });
         }
 
         // Obtención de usuarios existentes
         let existingUsers = await UserModel.find({
             $or: [
-                { tuitionNumber: params.tuitionNumber },
                 { email: params.email }
             ]
         });
