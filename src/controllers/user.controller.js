@@ -1,5 +1,6 @@
 import UserModel from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { createToken } from "../services/jwt.js";
 
 async function register(req, res) {
   
@@ -84,9 +85,13 @@ async function login(req, res) {
             });
         }
 
+        // Creación del token
+        const token = createToken(user)
+
         return res.status(200).send({
             status: "success",
-            message: "¡Inicio de sesión exitoso!"
+            message: "¡Inicio de sesión exitoso!",
+            token: token
         })
         
     } catch (error) {
