@@ -2,6 +2,7 @@ import connect from "./configs/mongo.js";
 import express from "express";
 import cors from "cors";
 import envs from "./configs/environments.js";
+import UserRoutes from "./routes/user.routes.js"
 
 // Crear servidor Node
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // form-urlencoded
 
 // Rutas
-// app.use("/api", articulos);
+app.use("/user", UserRoutes);
 
 // Crear servidor, escuchar peticiones HTTP y conectar con MongoDB
 console.log("Conectando a la base de datos...");
