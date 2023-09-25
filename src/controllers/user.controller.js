@@ -49,4 +49,53 @@ async function register(req, res) {
     }
 }
 
-export { register};
+async function login(req, res) {
+
+    try {
+      // Obtener parámetros del body
+      let params = req.body;
+
+      // Validación de parámetros requeridos.
+      if (!params.email || !params.password) {
+          return res.status(400).send({
+            status: "error",
+            message: "Faltan datos por enviar",
+          });
+        }
+        
+        // Buscar usuario en la BBDD
+        const user = await UserModel.findOne({ email: params.email });
+
+        // Validar si el usuario existe
+        if (!user) {
+            return res.status(400).send({
+              status: "error",
+              message: "El usuario no está registrado",
+            });
+        }
+
+        // Comprobar contraseña
+        let isSamePassword = bcrypt.compareSync(params.password, user.password);
+
+        // Validación de contraseña
+        if (!isSamePassword) {
+            return res.status(400).send({
+              status: "error",
+              message: "¡Contraseña incorrecta!",
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            message: "¡Inicio de sesión exitoso!"
+        })
+        
+    } catch (error) {
+        return res
+          .status(500)
+          .send({ error: "Ha ocurrido un error en la base de datos" });
+    }
+
+}
+
+export { register, login };
