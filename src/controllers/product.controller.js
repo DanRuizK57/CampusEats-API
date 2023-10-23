@@ -1,6 +1,6 @@
 import ProductModel from "../models/product.model";
 
-async function register(req, res) {
+async function add(req, res) {
   try {
     let params = req.body;
 
@@ -39,4 +39,31 @@ async function register(req, res) {
   }
 }
 
-export { register };
+async function detail(req, res) {
+  try {
+    // Obtener el ID
+    const productId = req.params.productId;
+
+    // Buscar producto por ID
+    const product = await ProductModel.findById(productId);
+
+    if (!product) {
+      return res.status(400).send({
+        status: "error",
+        message: "El producto no existe",
+      });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      message: "¡El producto ha sido encontrado!",
+      product: product,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ error: "Ha ocurrido un error en la base de datos" });
+  }
+}
+
+export { add, detail };
