@@ -127,4 +127,60 @@ async function update(req, res) {
   }
 }
 
-export { add, detail, remove, update };
+async function uploadPhoto(req, res) {
+
+  const productId = req.params.productId;
+
+  // Recoger el fichero de imagen y comprobar que existe
+  if (!req.file) {
+    return res.status(404).send({
+      status: "error",
+      message: "¡La solicitud requiere una imagen!",
+    });
+  }
+
+  // Conseguir en nombre del archivo
+  let photo = req.file.originalname;
+
+  // Obtener la extensión del archivo
+  const photoSplit = photo.split(".");
+  const extension = photoSplit[1];
+
+  // Comprobar la extensión
+  if (
+    extension != "png" &&
+    extension != "jpg" &&
+    extension != "jpeg"
+  ) {
+    const filePath = req.file.path;
+    // Borrar archivo
+    const fileDeleted = fs.unlinkSync(filePath);
+
+    return res.status(400).send({
+      status: "error",
+      message: "¡Extensión del fichero inválida!",
+    });
+  }
+
+  // Si es correcta, guardar en la BBDD
+  const productUpdated = await ProductModel.findByIdAndUpdate(
+    productId,
+    { photo: req.file.filename },
+    { new: true }
+  );
+
+  if (!productUpdated) {
+    return res.status(500).send({
+      status: "error",
+      message: "Ha ocurrido un error en la base de datos",
+    });
+  }
+
+  return res.status(200).send({
+    status: "success",
+    message: "¡Foto subida correctamente!",
+    productUpdated,
+  });
+}
+
+export { add, detail, remove, update, uploadPhoto };
