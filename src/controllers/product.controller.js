@@ -66,4 +66,35 @@ async function detail(req, res) {
   }
 }
 
-export { add, detail };
+async function remove(req, res) {
+  try {
+    // Obtener el ID
+    const productId = req.params.productId;
+
+    // Buscar producto por ID
+    const product = await ProductModel.find({
+      _id: productId,
+    });
+
+    if (!product) {
+      return res.status(400).send({
+        status: "error",
+        message: "No se ha eliminado el producto",
+      });
+    }
+
+    await ProductModel.findOneAndDelete(product);
+
+    return res.status(200).send({
+      status: "success",
+      message: "¡El producto ha sido eliminado correctamente!",
+      product: productId,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ error: "Ha ocurrido un error en la base de datos" });
+  }
+}
+
+export { add, detail, remove };
