@@ -97,4 +97,34 @@ async function remove(req, res) {
   }
 }
 
-export { add, detail, remove };
+async function update(req, res) {
+  try {
+    const productId = req.params.productId;
+    const productToUpdate = req.body;
+
+    // Buscar y actualizar
+    let productUpdated = await ProductModel.findByIdAndUpdate(
+      productId,
+      productToUpdate,
+      { new: true }
+    );
+
+    if (!productUpdated) {
+      return res
+        .status(500)
+        .send({ error: "Ha ocurrido un error al actualizar" });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      message: "¡El producto se ha actualizado correctamente!",
+      productUpdated,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: "Ha ocurrido un error en la base de datos" });
+  }
+}
+
+export { add, detail, remove, update };
