@@ -162,11 +162,6 @@ async function update(req, res) {
       .send({ error: "Ha ocurrido un error en la base de datos" });
   }
 
-  
-
-
-
-
 }
 
 export { register, login, update };
