@@ -102,4 +102,71 @@ async function login(req, res) {
 
 }
 
-export { register, login };
+async function update(req, res) {
+
+  try {
+    const userIdentified = req.user;
+    const userToUpdate = req.body;
+
+    // Eliminar datos que no se requieren
+    delete userToUpdate.iat;
+    delete userToUpdate.exp;
+    delete userToUpdate.role;
+    delete userToUpdate.image;
+
+    let existingUsers = await UserModel.find({ email: userToUpdate.email });
+
+    let userIsSet = false;
+
+    existingUsers.forEach((user) => {
+      if (user && user._id != userIdentity.id) {
+        userIsSet = true;
+      }
+    });
+
+    if (userIsSet) {
+      return res.status(404).send({
+        status: "error",
+        message: "Sólo puedes editar tu propio perfil!",
+      });
+    }
+
+    if (userToUpdate.password) {
+      // Cifrar contraseña
+      userToUpdate.password = await bcrypt.hashSync(userToUpdate.password, 10);
+    } else {
+      delete userToUpdate.password; // Para q no sobre-escriba en la BBDD
+    }
+
+    // Buscar y actualizar
+    let userUpdated = await UserModel.findByIdAndUpdate(
+      userIdentity.id,
+      userToUpdate,
+      { new: true }
+    );
+
+    if (!userUpdated) {
+      return res
+        .status(500)
+        .send({ error: "Ha ocurrido un error al actualizar" });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      message: "El usuario se ha actualizado correctamente!",
+      userUpdated,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: "Ha ocurrido un error en la base de datos" });
+  }
+
+  
+
+
+
+
+}
+
+export { register, login, update };
