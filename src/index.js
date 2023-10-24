@@ -4,7 +4,8 @@ import cors from "cors";
 import envs from "./configs/environments.js";
 import UserRoutes from "./routes/user.routes.js";
 import UniversityRoutes from "./routes/university.routes.js";
-import ProductRoutes from "./routes/products.routes.js";
+import ProductRoutes from "./routes/product.routes.js";
+import CafeteriaRoutes from "./routes/cafeteria.routes.js";
 
 // Crear servidor Node
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true })); // form-urlencoded
 app.use("/user", UserRoutes);
 app.use("/university", UniversityRoutes); 
 app.use("/product", ProductRoutes); 
+app.use("/cafeteria", CafeteriaRoutes);
 
 // Crear servidor, escuchar peticiones HTTP y conectar con MongoDB
 console.log("Conectando a la base de datos...");

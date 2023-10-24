@@ -4,7 +4,7 @@ import { list , create , update, remove } from "../controllers/university.contro
 const router = Router();
 
 router.get("/universities", list);
-router.post("/crearUniversity", create);
+router.post("/create", create);
 router.put("/:id", update);
 router.delete("/:id", remove);
 

@@ -11,12 +11,12 @@ async function add(req, res) {
       return res.status(400).send({ error: "Faltan datos por enviar" });
     }
 
-    // Obtención de usuarios existentes
+    // Obtención de productos existentes
     let existingProducts = await ProductModel.find({
       $or: [{ name: params.name }],
     });
 
-    // Validación de usuario ya registrado
+    // Validación de producto ya registrado
     if (existingProducts && existingProducts.length >= 1) {
       return res.status(400).send({
         status: "error",
@@ -26,7 +26,7 @@ async function add(req, res) {
       // Crear un nuevo objeto producto con sus parámetros
       let newProduct = new ProductModel(params);
 
-      // Guardar usuario en la base de datos
+      // Guardar producto en la base de datos
       await newProduct.save();
 
       return res.status(200).send({

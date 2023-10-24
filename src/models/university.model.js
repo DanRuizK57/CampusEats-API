@@ -6,7 +6,7 @@ const UniversitySchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      ciudad: {
+      city: {
         type: String,
         required: true,
       },
