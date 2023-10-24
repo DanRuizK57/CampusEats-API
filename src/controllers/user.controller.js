@@ -64,7 +64,8 @@ async function login(req, res) {
         }
         
         // Buscar usuario en la BBDD
-        const user = await UserModel.findOne({ email: params.email });
+      const user = await UserModel.findOne({ email: params.email })
+                          .select("+password +role");
 
         // Validar si el usuario existe
         if (!user) {
@@ -119,7 +120,7 @@ async function update(req, res) {
     let userIsSet = false;
 
     existingUsers.forEach((user) => {
-      if (user && user._id != userIdentity.id) {
+      if (user && user._id != userIdentified.id) {
         userIsSet = true;
       }
     });
@@ -140,7 +141,7 @@ async function update(req, res) {
 
     // Buscar y actualizar
     let userUpdated = await UserModel.findByIdAndUpdate(
-      userIdentity.id,
+      userIdentified.id,
       userToUpdate,
       { new: true }
     );

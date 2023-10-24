@@ -12,7 +12,7 @@ export function createToken(user) {
         role: user.role,
         image: user.image,
         iat: moment().unix(), // Fecha de creación del payload
-        exp: moment.add(30, "days").unix()
+        exp: moment().add(30, "days").unix()
     };
 
     // Devolver JWT token codificado
