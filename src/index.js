@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import envs from "./configs/environments.js";
 import UserRoutes from "./routes/user.routes.js"
+import UniversityRoutes from "./routes/university.routes.js";
+
 
 // Crear servidor Node
 const app = express();
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: true })); // form-urlencoded
 
 // Rutas
 app.use("/user", UserRoutes);
+app.use("/university", UniversityRoutes); 
 
 // Crear servidor, escuchar peticiones HTTP y conectar con MongoDB
 console.log("Conectando a la base de datos...");
