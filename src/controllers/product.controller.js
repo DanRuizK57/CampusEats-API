@@ -132,7 +132,7 @@ async function update(req, res) {
 async function uploadPhoto(req, res) {
 
   const productId = req.params.productId;
-  console.log(req.file);
+
   // Recoger el fichero de imagen y comprobar que existe
   if (!req.file) {
     return res.status(404).send({

@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
-  // cafeteria: {
-  //   type: Schema.ObjectId,
-  //   ref: "Cafeteria",
-  // },
+  cafeteria: {
+    type: Schema.ObjectId,
+    ref: "Cafeteria",
+  },
   name: {
     type: String,
     required: true,
