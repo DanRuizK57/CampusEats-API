@@ -1,4 +1,6 @@
-import ProductModel from "../models/product.model";
+import ProductModel from "../models/product.model.js";
+import fs from "fs";
+import path from "path";
 
 async function add(req, res) {
   try {
@@ -130,7 +132,7 @@ async function update(req, res) {
 async function uploadPhoto(req, res) {
 
   const productId = req.params.productId;
-
+  console.log(req.file);
   // Recoger el fichero de imagen y comprobar que existe
   if (!req.file) {
     return res.status(404).send({
@@ -183,6 +185,25 @@ async function uploadPhoto(req, res) {
   });
 }
 
+function showPhoto(req, res) {
+  const file = req.params.file;
+
+  const filePath = "./uploads/products/" + file;
+
+  // Comprobar que existe
+  fs.stat(filePath, (error, exists) => {
+    if (!exists) {
+      return res.status(404).send({
+        status: "error",
+        message: "¡No existe la imagen!",
+      });
+    }
+
+    // Devolver imagen
+    return res.sendFile(path.resolve(filePath));
+  });
+}
+
 async function list(req, res) {
   try {
     const products = await ProductModel.find();
@@ -198,4 +219,4 @@ async function list(req, res) {
   }
 }
 
-export { add, detail, remove, update, uploadPhoto, list };
+export { add, detail, remove, update, uploadPhoto, showPhoto, list };
