@@ -21,6 +21,10 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isFavourite: {
+    type: Boolean,
+    default: false,
+  },
   photo: {
     type: String,
     default: "default.png",

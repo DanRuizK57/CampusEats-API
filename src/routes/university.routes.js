@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { list , create , update, remove } from "../controllers/university.controller.js";
+import { list, create, update, remove } from "../controllers/university.controller.js";
 import multer from "multer";
+import { showPhoto, uploadPhoto } from "../controllers/product.controller.js";
 
 // Configuración de subida
 const storage = multer.diskStorage({
@@ -25,7 +26,7 @@ router.put("/:id", update);
 router.delete("/:id", remove);
 
 
-router.post("/upload-photo/:id", [auth, uploads.single("file0")], uploadPhoto);
-router.get("/photo/:file", auth, showPhoto);
+router.post("/upload-photo/:id", uploads.single("file0"), uploadPhoto);
+router.get("/photo/:file", showPhoto);
 
 export default router;

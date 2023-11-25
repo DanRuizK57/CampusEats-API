@@ -7,7 +7,6 @@ import {
   uploadImage,
   showImage
 } from "../controllers/cafeteria.controller.js";
-import { auth } from "../middlewares/auth.js";
 import multer from "multer";
 
 // Configuración de subida
@@ -24,15 +23,14 @@ const uploads = multer({ storage });
 
 const router = Router();
 
-router.post("/add", auth, add);
-router.get("/list", auth, list);
-router.delete("/remove/:cafeteriaId", auth, remove);
-router.put("/update/:cafeteriaId", auth, update);
+router.post("/add", add);
+router.get("/list", list);
+router.delete("/remove/:cafeteriaId", remove);
+router.put("/update/:cafeteriaId", update);
 router.post(
-  "/upload-image/:cafeteriaId",
-  [auth, uploads.single("file0")],
+  "/upload-image/:cafeteriaId", uploads.single("file0"),
   uploadImage
 );
-router.get("/image/:file", auth, showImage);
+router.get("/image/:file", showImage);
 
 export default router;

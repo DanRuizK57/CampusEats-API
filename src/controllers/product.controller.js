@@ -219,4 +219,19 @@ async function list(req, res) {
   }
 }
 
-export { add, detail, remove, update, uploadPhoto, showPhoto, list };
+async function favourites(req, res) {
+  try {
+    const favourites = await ProductModel.find({ isFavourite: true });
+    return res.status(200).json({
+      status: "success",
+      products: favourites,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Ha ocurrido un error en la base de datos",
+    });
+  }
+}
+
+export { add, detail, remove, update, uploadPhoto, showPhoto, list, favourites };

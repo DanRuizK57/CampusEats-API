@@ -7,8 +7,8 @@ import {
   uploadPhoto,
   showPhoto,
   list,
+  favourites,
 } from "../controllers/product.controller.js";
-import { auth } from "../middlewares/auth.js";
 import multer from "multer";
 
 // Configuración de subida
@@ -25,12 +25,13 @@ const uploads = multer({ storage });
 
 const router = Router();
 
-router.post("/add", auth, add);
-router.get("/detail/:productId", auth, detail);
-router.delete("/remove/:productId", auth, remove);
-router.put("/update/:productId", auth, update);
-router.post("/upload-photo/:productId", [auth, uploads.single("file0")], uploadPhoto);
-router.get("/photo/:file", auth, showPhoto);
-router.get("/list", auth, list);
+router.post("/add", add);
+router.get("/detail/:productId", detail);
+router.delete("/remove/:productId", remove);
+router.put("/update/:productId", update);
+router.post("/upload-photo/:productId", uploads.single("file0"), uploadPhoto);
+router.get("/photo/:file", showPhoto);
+router.get("/list", list);
+router.get("/favourites", favourites);
 
 export default router;
