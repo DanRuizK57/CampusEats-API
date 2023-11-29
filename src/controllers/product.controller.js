@@ -234,4 +234,41 @@ async function favourites(req, res) {
   }
 }
 
-export { add, detail, remove, update, uploadPhoto, showPhoto, list, favourites };
+async function setFavourite(req, res) {
+    // Obtener el ID
+    const productId = req.params.productId;
+
+    // Buscar producto por ID
+    const product = await ProductModel.findById(productId);
+  
+  const productToUpdate = await ProductModel.findOneAndUpdate(
+    product,
+    { isFavourite: !product.isFavourite },
+    { new: true }
+  );
+
+    if (!product) {
+      return res.status(400).send({
+        status: "error",
+        message: "El producto no existe",
+      });
+    }
+
+    if (productToUpdate.isFavourite === true) {
+      return res.status(200).send({
+        status: "success",
+        message: "¡El producto ha sido añadido a favoritos!",
+        product: product,
+      });
+    } else {
+      return res.status(200).send({
+        status: "success",
+        message: "¡El producto ha sido quitado de favoritos!",
+        product: productToUpdate,
+      });
+    }
+
+
+}
+
+export { add, detail, remove, update, uploadPhoto, showPhoto, list, favourites, setFavourite };

@@ -8,6 +8,7 @@ import {
   showPhoto,
   list,
   favourites,
+  setFavourite,
 } from "../controllers/product.controller.js";
 import multer from "multer";
 
@@ -33,5 +34,6 @@ router.post("/upload-photo/:productId", uploads.single("file0"), uploadPhoto);
 router.get("/photo/:file", showPhoto);
 router.get("/list", list);
 router.get("/favourites", favourites);
+router.post("/set-favourite/:productId", setFavourite);
 
 export default router;
