@@ -1,3 +1,4 @@
+import { log } from "console";
 import ProductModel from "../models/product.model.js";
 import fs from "fs";
 import path from "path";
@@ -239,10 +240,10 @@ async function setFavourite(req, res) {
     const productId = req.params.productId;
 
     // Buscar producto por ID
-    const product = await ProductModel.findById(productId);
+  const product = await ProductModel.findById(productId);
   
-  const productToUpdate = await ProductModel.findOneAndUpdate(
-    product,
+  const productToUpdate = await ProductModel.findByIdAndUpdate(
+    product._id,
     { isFavourite: !product.isFavourite },
     { new: true }
   );
@@ -252,7 +253,11 @@ async function setFavourite(req, res) {
         status: "error",
         message: "El producto no existe",
       });
-    }
+  }
+  
+  if (productToUpdate.isFavourite === null) { 
+    productToUpdate.isFavourite = "false";
+  }
 
     if (productToUpdate.isFavourite === true) {
       return res.status(200).send({
